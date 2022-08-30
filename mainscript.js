@@ -20,7 +20,6 @@ flySFX.src = "audio/fly.mp3";
 scoreSFX.src = "audio/score.mp3";
 
 let gap = 100;
-let Const = pipeUp.height + gap;
 
 let bX = 15;
 let bY = 150;
@@ -65,7 +64,7 @@ function stateChange(){
 function drawGame(){
 
     if(isOnPause) return;
-
+    let Const = pipeUp.height + gap;
     ctx.drawImage(back, 0, 0);  
     
     for(let i = 0; i < pipe.length; i++){

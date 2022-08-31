@@ -1,5 +1,5 @@
-let camvas = document.getElementById('canvas');
-let ctx = camvas.getContext('2d');
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
 
 let bird = new Image();
 let back = new Image();
@@ -33,8 +33,9 @@ let bestScore = 0;
 
 let pipe = [];
 
-document.getElementById("score").textContent=score;
-document.getElementById("bestScore").textContent=bestScore;
+
+
+canvas.setAttribute('style', 'width: 288px; height: 512px');
 
 document.addEventListener("keydown", (e) => {
     e = e || window.event;
@@ -46,7 +47,7 @@ document.addEventListener("keydown", (e) => {
 })
 
 pipe[0] = {
-    x : camvas.width,
+    x : canvas.width,
     y : 0
 };
 
@@ -59,9 +60,19 @@ function moveUp(){
 
 function stateChange(){
     isOnPause = !isOnPause;
+    if (isOnPause) {
+        clearInterval(framedelay);
+        ctx.fillStyle = 'rgba(0, 0, 0, .3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        return;
+    } 
+    framedelay = setInterval(drawGame, 20);
 }
 
 function drawGame(){
+
+    document.getElementById("score").textContent=score;
+    document.getElementById("bestScore").textContent=bestScore;
 
     if(isOnPause) return;
     let Const = pipeUp.height + gap;
@@ -72,9 +83,9 @@ function drawGame(){
         ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + Const);
         pipe[i].x--;
         
-        if(pipe[i].x == camvas.width - 220){
+        if(pipe[i].x == canvas.width - 220){
             pipe.push({
-                x : camvas.width,
+                x : canvas.width,
                 y : Math.floor(Math.random() * pipeUp.height) - pipeUp.height
             });
         }    
@@ -85,19 +96,19 @@ function drawGame(){
             document.getElementById("score").textContent=score;
         }
         
-        if((bX + bird.width >= pipe[i].x && bX <= pipe[i].x + pipeUp.width && (bY <= pipe[i].y + pipeUp.height || bY + bird.height >= pipe[i].y + Const))|| bY >= camvas.height - road.height - bird.height){
+        if((bX + bird.width >= pipe[i].x && bX <= pipe[i].x + pipeUp.width && (bY <= pipe[i].y + pipeUp.height || bY + bird.height >= pipe[i].y + Const))|| bY >= canvas.height - road.height - bird.height){
             ReloadGame();
         }
 
     }
 
-    ctx.drawImage(road, 0, camvas.height - road.height);
+    ctx.drawImage(road, 0, canvas.height - road.height);
     ctx.drawImage(bird, bX, bY);
     velY = velY + gravity;
     bY += velY;
 }
 
-setInterval(drawGame, 20);
+let framedelay = setInterval(drawGame, 20);
 
 
 
@@ -111,7 +122,7 @@ function ReloadGame(){
 
     pipe.length = 0;
     pipe.push({
-        x : camvas.width,
+        x : canvas.width,
         y : 0
     });
     document.getElementById("score").textContent=score;

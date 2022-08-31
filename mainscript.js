@@ -33,7 +33,10 @@ let bestScore = 0;
 
 let pipe = [];
 
-
+pipe[0] = {
+    x : canvas.width,
+    y : 0
+};
 
 canvas.setAttribute('style', 'width: 288px; height: 512px');
 
@@ -45,11 +48,6 @@ document.addEventListener("keydown", (e) => {
         stateChange();
     }
 })
-
-pipe[0] = {
-    x : canvas.width,
-    y : 0
-};
 
 function moveUp(){
     if(isOnPause) return;
@@ -109,8 +107,6 @@ function drawGame(){
 }
 
 let framedelay = setInterval(drawGame, 20);
-
-
 
 function ReloadGame(){
     bY = 150;
